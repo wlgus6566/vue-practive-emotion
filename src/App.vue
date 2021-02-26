@@ -1,28 +1,72 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <div style="position:fixed; bottom:0; left:0; font-size:50px; z-index: 2">
+      {{test}}
+    </div>
+    <HeaderVue/>
+
+    <transition
+        :include="['home', 'about', 'contact']"
+        v-on:enter="enter"
+        v-on:leave="leave"
+        v-bind:css="false"
+        appear
+    >
+      <keep-alive>
+        <router-view :key='$route.fullPath'/>
+      </keep-alive>
+    </transition>
+    {{$route.fullPath}}
   </div>
+
 </template>
-
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
+import HeaderVue from "@/components/HeaderVue";
+import { Power4, TweenMax, TimelineMax } from 'gsap'
 export default {
-  name: 'App',
   components: {
-    HelloWorld
-  }
+    HeaderVue,
+  },
+  computed :{
+    test(){
+      return this.$route.fullPath || 'home'
+    }
+  },
+  methods : {
+    enter(el, done) {
+      const tl = new TimelineMax({
+        onComplete: done
+      })
+      tl.set(el, {
+        y: window.innerWidth * 1.5,
+        scale: 0.8,
+      })
+      tl.to(el, 0.5, {
+        y: 0,
+        ease: Power4.easeOut
+      });
+
+      tl.to(el, 1, {
+        scale: 1,
+        ease: Power4.easeOut
+      });
+    },
+    leave(el, done) {
+      TweenMax.to(el, 1, {
+        y: window.innerHeight * -1.5,
+        ease: Power4.easeOut,
+        onComplete: done
+      });
+    }
+  },
 }
 </script>
-
 <style>
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+  overflow: hidden;
+}
+.num {
+  color: deeppink;
+  font-size: 200px;
 }
 </style>
