@@ -5,7 +5,9 @@
         <ul class="nav-list">
           <li class="nav-item"><router-link to="/">Home</router-link></li>
           <li class="nav-item"><router-link to="/about">About</router-link></li>
-          <li class="nav-item"><router-link to="/contact">Contact</router-link></li>
+          <li class="nav-item">
+            <router-link to="/contact">Contact</router-link>
+          </li>
         </ul>
       </nav>
       <h1 class="logo">
@@ -15,17 +17,15 @@
   </div>
 </template>
 <script>
-export default {
-}
+export default {};
 </script>
 <style scoped>
 a {
   text-decoration: none;
 }
 .header {
+  z-index: 199999;
   position: fixed;
-  left: 0;
-  top: 0;
   display: flex;
   align-items: center;
   width: 100%;
@@ -35,15 +35,15 @@ a {
   position: absolute;
   left: 50%;
   top: 50%;
-  transform: translate(-50%,-50%);
+  transform: translate(-50%, -50%);
   margin: 0;
 }
-.header .logo a{
+.header .logo a {
   font-size: 20px;
   color: #000;
   line-height: 50px;
 }
-.header .nav{
+.header .nav {
   color: #fff;
   height: 50px;
 }
@@ -52,13 +52,13 @@ a {
 }
 .header .nav .nav-item {
   display: inline-block;
-  margin:0 15px;
+  margin: 0 15px;
 }
-.header .nav .nav-item a{
+.header .nav .nav-item a {
   text-decoration: none;
   color: #000;
 }
-.header .nav .nav-item a.router-link-exact-active{
+.header .nav .nav-item a.router-link-exact-active {
   font-weight: bold;
 }
 </style>

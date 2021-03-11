@@ -1,69 +1,66 @@
 <template>
   <div id="app">
-    <div style="position:fixed; bottom:0; left:0; font-size:50px; z-index: 2">
-      {{test}}
-    </div>
-    <HeaderVue/>
-
+    <HeaderVue />
     <transition
-        :include="['home', 'about', 'contact']"
-        v-on:enter="enter"
-        v-on:leave="leave"
-        v-bind:css="false"
-        appear
+      @enter="enter"
+      @leave="leave"
+      v-bind:css="false"
+      mode="out-in"
+      appear
     >
-      <keep-alive>
-        <router-view :key='$route.fullPath'/>
-      </keep-alive>
+      <router-view />
     </transition>
-    {{$route.fullPath}}
   </div>
-
 </template>
 <script>
 import HeaderVue from "@/components/HeaderVue";
-import { Power4, TweenMax, TimelineMax } from 'gsap'
+import { Power2, TweenMax } from "gsap";
 export default {
   components: {
     HeaderVue,
   },
-  computed :{
-    test(){
-      return this.$route.fullPath || 'home'
-    }
-  },
-  methods : {
+  computed: {},
+  methods: {
     enter(el, done) {
-      const tl = new TimelineMax({
-        onComplete: done
-      })
-      tl.set(el, {
-        y: window.innerWidth * 1.5,
-        scale: 0.8,
-      })
-      tl.to(el, 0.5, {
-        y: 0,
-        ease: Power4.easeOut
-      });
-
-      tl.to(el, 1, {
-        scale: 1,
-        ease: Power4.easeOut
-      });
+      console.log(el);
+      TweenMax.fromTo(
+        el,
+        {
+          y: 50,
+          opacity: 0,
+        },
+        {
+          y: 0,
+          opacity: 1,
+          ease: Power2.easeOut,
+          duration: 0.3,
+          onComplete: done,
+        }
+      );
     },
     leave(el, done) {
-      TweenMax.to(el, 1, {
-        y: window.innerHeight * -1.5,
-        ease: Power4.easeOut,
-        onComplete: done
+      TweenMax.to(el, 0.3, {
+        y: -50,
+        opacity: 0,
+        ease: Power2.easeOut,
+        onComplete: done,
       });
-    }
+    },
   },
-}
+  watch: {
+    $route(val) {
+      console.log(val.matched[0].path);
+    },
+  },
+};
 </script>
 <style>
 #app {
   overflow: hidden;
+}
+body {
+  margin: 0;
+  padding: 0;
 }
 .num {
   color: deeppink;
